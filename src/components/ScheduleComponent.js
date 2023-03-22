@@ -1,8 +1,28 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+} from 'react-native-reanimated';
 
 export default function ScheduleComponent(props) {
   const [show, setShow] = useState(true);
+  const progress = useSharedValue({height: 240});
+  const reanimatedStyle = useAnimatedStyle(() => {
+    return {
+      height: withTiming(progress.value.height),
+      duration: 2000,
+    };
+  }, []);
+
+  const Opening = value => {
+    if (value) {
+      progress.value = {height: 0};
+    } else {
+      progress.value = {height: 240};
+    }
+  };
 
   return (
     <View style={styles.scheduleContainer}>
@@ -16,10 +36,12 @@ export default function ScheduleComponent(props) {
         <TouchableOpacity
           onPress={() => {
             setShow(!show);
+            Opening(show);
           }}>
           <Text style={styles.title}>{props.title}</Text>
         </TouchableOpacity>
-        {show ? (
+
+        <Animated.View style={[reanimatedStyle]}>
           <Text style={styles.text}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
@@ -29,13 +51,17 @@ export default function ScheduleComponent(props) {
             pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
             culpa qui officia deserunt mollit anim id est laborum.
           </Text>
-        ) : null}
+        </Animated.View>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  scheduleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   title: {
     color: 'rgb(28,134,236)',
     fontSize: 17,
@@ -51,13 +77,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginRight: 30,
     marginLeft: 10,
+    marginBottom: 40,
     width: 280,
   },
-  scheduleContainer: {
-    flexDirection: 'row',
-    marginTop: 30,
-    justifyContent: 'space-between',
-  },
+
   dayBox: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -68,7 +91,7 @@ const styles = StyleSheet.create({
   },
   dottedLine: {
     marginTop: 10,
-    marginBottom: 10,
+    marginBottom: 4,
     flex: 1,
     width: 2,
     borderWidth: 2,

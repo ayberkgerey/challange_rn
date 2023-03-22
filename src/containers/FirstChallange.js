@@ -29,5 +29,5 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(241,251,255)',
   },
   title: {},
-  explainContainer: {margin: 10},
+  explainContainer: {marginLeft: 10, marginTop: 30},
 });
