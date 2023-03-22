@@ -1,18 +1,6 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import FirstChallange from './src/containers/FirstChallange';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Hello World</Text>
-    </View>
-  );
+  return <FirstChallange />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
